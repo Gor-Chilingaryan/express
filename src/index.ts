@@ -24,6 +24,7 @@ const db = {
 app.get('/', (req, res) => {
 	res.send('Hello World')
 })
+
 app.get('/courses', (req, res) => {
 	res.json(db.courses)
 })
@@ -35,6 +36,7 @@ app.get('/courses/:id', (req, res) => {
 		res.sendStatus(HTTP_STATUS.NOT_FOUND)
 		return
 	}
+
 	res.json(foundedCourse)
 })
 
@@ -48,13 +50,14 @@ app.post('/courses', (req, res) => {
 		id: +new Date(),
 		title: req.body.title,
 	}
+
 	db.courses.push(createdCourse)
-	console.log(createdCourse)
 	res.json(createdCourse)
 })
 
 app.delete('/courses/:id', (req, res) => {
 	db.courses = db.courses.filter(c => c.id !== +req.params.id)
+
 	res.sendStatus(HTTP_STATUS.NO_CONTENT)
 })
 
@@ -72,6 +75,7 @@ app.put('/courses/:id', (req, res) => {
 	}
 
 	foundedCourse.title = req.body.title
+	
 	res.json(foundedCourse)
 })
 
