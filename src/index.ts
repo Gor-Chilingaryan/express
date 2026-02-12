@@ -6,6 +6,12 @@ const PORT = 3000
 const jsonBodyMiddleware = express.json()
 app.use(jsonBodyMiddleware)
 
+const HTTP_STATUS = {
+	NOT_FOUND: 404,
+	BAD_REQUEST: 400,
+	NO_CONTENT: 204,
+}
+
 const db = {
 	courses: [
 		{ id: 1, title: 'front-end' },
@@ -26,7 +32,7 @@ app.get('/courses/:id', (req, res) => {
 	const foundedCourse = db.courses.find(c => c.id === +req.params.id)
 
 	if (!foundedCourse) {
-		res.sendStatus(404)
+		res.sendStatus(HTTP_STATUS.NOT_FOUND)
 		return
 	}
 	res.json(foundedCourse)
@@ -34,7 +40,7 @@ app.get('/courses/:id', (req, res) => {
 
 app.post('/courses', (req, res) => {
 	if (!req.body.title) {
-		res.sendStatus(400)
+		res.sendStatus(HTTP_STATUS.BAD_REQUEST)
 		return
 	}
 
@@ -49,19 +55,19 @@ app.post('/courses', (req, res) => {
 
 app.delete('/courses/:id', (req, res) => {
 	db.courses = db.courses.filter(c => c.id !== +req.params.id)
-	res.sendStatus(204)
+	res.sendStatus(HTTP_STATUS.NO_CONTENT)
 })
 
 app.put('/courses/:id', (req, res) => {
 	if (!req.body.title) {
-		res.sendStatus(400)
+		res.sendStatus(HTTP_STATUS.BAD_REQUEST)
 		return
 	}
 
 	const foundedCourse = db.courses.find(c => c.id === +req.params.id)
 
 	if (!foundedCourse) {
-		res.sendStatus(404)
+		res.sendStatus(HTTP_STATUS.NOT_FOUND)
 		return
 	}
 
